@@ -164,6 +164,11 @@ Misc. commands for deleting the queue
   sudo rabbitmqctl purge_queue "indices_queue"
 ```
 
+Set a max queue length for rabbitmq
+```
+rabbitmqctl set_policy Ten "^incides_queues$" '{"max-length-bytes":1000000}' --apply-to queues
+```
+
 Enable the custom TCP port access to the collector.go server for port number for 5672.
 
 Misc. Commands for Influxdb
