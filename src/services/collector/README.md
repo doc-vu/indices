@@ -35,8 +35,7 @@ echo 'export GOPATH=$HOME/indices/indices/src/services/collector' >> ~/.bashrc
 echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> ~/.bashrc
 echo 'export GOBIN=$GOPATH/bin' >> ~/.bashrc
 source ~/.bashrc
-cd $HOME/indices/indices/src/services/collector
-go get
+
 
 ```
 
@@ -147,8 +146,15 @@ Set
 ```
 <user> eg: indices_user
 <pass> eg: indices_manager
-<collectd-queue> eg: collectd-queue
+<collectd-queue> eg: collectd_queue
 <collectd-key> eg: collectd-key
+```
+
+Run 
+
+```
+cd $HOME/indices/indices/src/services/collector/src
+go get
 ```
 Also add the following user/password and permissions in the RabbitMQ
 
@@ -161,12 +167,12 @@ Also add the following user/password and permissions in the RabbitMQ
 Misc. commands for deleting the queue
 
 ```
-  sudo rabbitmqctl purge_queue "indices_queue"
+  sudo rabbitmqctl purge_queue "collectd_queue"
 ```
 
 Set a max queue length for rabbitmq
 ```
-rabbitmqctl set_policy Ten "^incides_queues$" '{"max-length-bytes":1000000}' --apply-to queues
+rabbitmqctl set_policy Ten "^collectd_queues$" '{"max-length-bytes":1000000}' --apply-to queues
 ```
 
 Enable the custom TCP port access to the collector.go server for port number for 5672.
