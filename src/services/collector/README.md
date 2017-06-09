@@ -155,6 +155,9 @@ Run
 ```
 cd $HOME/indices/indices/src/services/collector/src
 go get
+
+cd $HOME/indices/indices/src/services/collector/bin
+nohup ./src &
 ```
 Also add the following user/password and permissions in the RabbitMQ
 
