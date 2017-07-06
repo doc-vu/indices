@@ -190,6 +190,8 @@ use collectd-db
 show series
 show * from host_metrics
 select * from host_metrics where host='collectd-client'
+select cpu from host_metrics where host='localhost' ORDER BY DESC limit 1
+
 
 
 influx --database collectd-db --format csv --execute "select * from host_metrics where host='collectd-client'" > output.csv
