@@ -188,7 +188,7 @@ drop database "collectd-db"
 create database "collectd-db"
 use collectd-db
 show series
-show * from host_metrics
+select * from host_metrics
 select * from host_metrics where host='collectd-client'
 select cpu from host_metrics where host='localhost' ORDER BY DESC limit 1
 
