@@ -18,15 +18,15 @@ import (
 )
 
 const (
-    MyDB = "collectd-db"
+    MyDB = "collectd_db"
     //measurement = "system_metrics"
-    username = "<user>"
-    password = "<pass>"
+    username = "indices_user"
+    password = "indices_manager"
 )
 
 
 var (
-	uri          = flag.String("uri", "amqp://<user>:<pass>@0.0.0.0:5672", "AMQP URI")
+	uri          = flag.String("uri", "amqp://indices_user:indices_manager@0.0.0.0:5672", "AMQP URI")
 	exchange     = flag.String("exchange", "collectd-exchange", "Durable, non-auto-deleted AMQP exchange name")
 	exchangeType = flag.String("exchange-type", "direct", "Exchange type - direct|fanout|topic|x-custom")
 	queue        = flag.String("queue", "collectd_queue", "Ephemeral AMQP queue name")
@@ -199,14 +199,14 @@ func handle(dbClient client.Client, deliveries <-chan amqp.Delivery, done chan e
 
 		var m[] PerfMetric
 		s := string(d.Body)
-		//log.Println(s)
+		log.Println(s)
 		jsonerr := json.NewDecoder(strings.NewReader(s)).Decode(&m)
 		if jsonerr != nil {
 		    log.Println(jsonerr.Error())
 		    d.Ack(false)
 		    continue
 		}
-	//	 log.Println(m)
+	  log.Println(m)
 		writePoints(dbClient, m[0])
 		d.Ack(false)
 	}
@@ -343,7 +343,7 @@ func writePoints(clnt client.Client, m PerfMetric) {
 
     // Write the batch
     err = clnt.Write(bp)
-
+	log.Printf("writing to the database:",pt.String())
    if err != nil {
 	log.Fatalf("unexpected error.  %v", err)
    }
