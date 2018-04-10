@@ -20,13 +20,13 @@ import (
 const (
     MyDB = "collectd-db"
     //measurement = "system_metrics"
-    username = "<user>"
-    password = "<pass>"
+    username = "indices"
+    password = "manager"
 )
 
 
 var (
-	uri          = flag.String("uri", "amqp://<user>:<pass>@0.0.0.0:5672", "AMQP URI")
+	uri          = flag.String("uri", "amqp://indices:manager@0.0.0.0:5672", "AMQP URI")
 	exchange     = flag.String("exchange", "collectd-exchange", "Durable, non-auto-deleted AMQP exchange name")
 	exchangeType = flag.String("exchange-type", "direct", "Exchange type - direct|fanout|topic|x-custom")
 	queue        = flag.String("queue", "collectd_queue", "Ephemeral AMQP queue name")
@@ -199,7 +199,7 @@ func handle(dbClient client.Client, deliveries <-chan amqp.Delivery, done chan e
 
 		var m[] PerfMetric
 		s := string(d.Body)
-		//log.Println(s)
+		log.Println(s)
 		jsonerr := json.NewDecoder(strings.NewReader(s)).Decode(&m)
 		if jsonerr != nil {
 		    log.Println(jsonerr.Error())
@@ -311,6 +311,13 @@ func writePoints(clnt client.Client, m PerfMetric) {
 			//fields["intensity"] = m.Values[0]
 		   	fields["intensity"] = float64(m.Values[0])
 			break
+
+		case "power":
+			measurement = "client_metrics"
+			for i := range m.Parameters  {
+				fields[m.Type + "_" + m.Parameters[i]] = m.Values[i]
+			}
+
 			
 		default:
 			measurement = "host_metrics"
